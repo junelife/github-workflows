@@ -1,0 +1,22 @@
+name: June terraform format check
+
+on:
+  workflow_call:
+    inputs:
+      terraform_version:
+        required: true
+        type: string
+      terraform_dir:
+        required: false
+        type: string
+        default: "terraform"
+
+jobs:
+  terraform-fmt-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+    - run: terraform fmt -check -diff -recursive ${{ inputs.terraform_dir }}
